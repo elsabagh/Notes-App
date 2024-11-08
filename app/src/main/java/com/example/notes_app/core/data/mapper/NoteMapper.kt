@@ -23,8 +23,8 @@ fun NoteItem.toNoteEntityForDelete(): NoteEntity {
     )
 }
 
-fun NoteItem.toNoteItem(): NoteEntity {
-    return NoteEntity(
+fun NoteEntity.toNoteItem(): NoteItem {
+    return NoteItem(
         title = title,
         description = description,
         imageUrl = imageUrl,
