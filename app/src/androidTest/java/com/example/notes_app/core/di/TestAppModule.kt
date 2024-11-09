@@ -5,8 +5,8 @@ import androidx.room.Room
 import com.example.notes_app.core.data.local.NoteDb
 import com.example.notes_app.core.data.repository.FakeAndroidNoteRepository
 import com.example.notes_app.core.domain.repository.NoteRepository
-import com.example.notes_app.use_case.DeleteNote
-import com.example.notes_app.use_case.GetAllNotes
+import com.example.notes_app.note_list.domain.use_case.DeleteNote
+import com.example.notes_app.note_list.domain.use_case.GetAllNotes
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

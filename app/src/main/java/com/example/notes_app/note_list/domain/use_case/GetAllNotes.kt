@@ -1,4 +1,4 @@
-package com.example.notes_app.use_case
+package com.example.notes_app.note_list.domain.use_case
 
 import com.example.notes_app.core.domain.model.NoteItem
 import com.example.notes_app.core.domain.repository.NoteRepository

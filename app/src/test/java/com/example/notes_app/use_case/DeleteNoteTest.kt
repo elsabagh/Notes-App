@@ -3,6 +3,7 @@ package com.example.notes_app.use_case
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.notes_app.core.data.repository.FakeNoteRepository
 import com.example.notes_app.core.domain.model.NoteItem
+import com.example.notes_app.note_list.domain.use_case.DeleteNote
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
