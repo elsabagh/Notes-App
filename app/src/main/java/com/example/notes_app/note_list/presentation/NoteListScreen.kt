@@ -25,7 +25,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -48,22 +47,34 @@ import coil.size.Size
 import com.example.notes_app.R
 import com.example.notes_app.core.domain.model.NoteItem
 import com.example.notes_app.core.presentation.util.TestTags
-import com.example.notes_app.note_list.domain.use_case.DeleteNote
-import com.example.notes_app.note_list.domain.use_case.GetAllNotes
 
 @Composable
 fun NoteListScreen(
     onNavigateToAddNote: () -> Unit,
     noteListViewModel: NoteListViewModel = hiltViewModel(),
+    previewNotes: List<NoteItem>? = null,
+    previewOrderByTitle: Boolean? = null,
 ) {
-
-    LaunchedEffect(true) {
-        noteListViewModel.loadNotes()
-    }
-
     val noteListState by noteListViewModel.noteListState.collectAsState()
     val orderByTitleState by noteListViewModel.orderByTitleState.collectAsState()
 
+    NoteListContent(
+        notesState = previewNotes ?: noteListState,
+        isOrderedByTitleState = previewOrderByTitle ?: orderByTitleState,
+        onNavigateToAddNote = onNavigateToAddNote,
+        onChangeOrder = { noteListViewModel.changeOrder() },
+        onDeleteNote = { note -> noteListViewModel.deleteNote(note) }
+    )
+}
+
+@Composable
+fun NoteListContent(
+    notesState: List<NoteItem>,
+    isOrderedByTitleState: Boolean,
+    onNavigateToAddNote: () -> Unit,
+    onChangeOrder: () -> Unit,
+    onDeleteNote: (NoteItem) -> Unit,
+) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -77,7 +88,7 @@ fun NoteListScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(R.string.notes, noteListState.size),
+                    text = stringResource(R.string.notes, notesState.size),
                     textAlign = TextAlign.Start,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 19.sp,
@@ -86,13 +97,11 @@ fun NoteListScreen(
                 Row(
                     modifier = Modifier
                         .clip(RoundedCornerShape(20.dp))
-                        .clickable {
-                            noteListViewModel.changeOrder()
-                        }
+                        .clickable { onChangeOrder() }
                         .padding(horizontal = 4.dp)
                 ) {
                     Text(
-                        text = if (orderByTitleState) stringResource(R.string.t)
+                        text = if (isOrderedByTitleState) stringResource(R.string.t)
                         else stringResource(R.string.d),
                         textAlign = TextAlign.Start,
                         fontWeight = FontWeight.SemiBold,
@@ -101,18 +110,15 @@ fun NoteListScreen(
                     Spacer(modifier = Modifier.width(4.dp))
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.Sort,
-                        contentDescription =
-                        if (orderByTitleState) stringResource(R.string.sort_by_date)
+                        contentDescription = if (isOrderedByTitleState) stringResource(R.string.sort_by_date)
                         else stringResource(R.string.sort_by_title)
                     )
                 }
-
             }
         },
         floatingActionButton = {
             FloatingActionButton(
-                modifier = Modifier
-                    .testTag(TestTags.ADD_NOTE_FAB),
+                modifier = Modifier.testTag(TestTags.ADD_NOTE_FAB),
                 onClick = onNavigateToAddNote
             ) {
                 Icon(
@@ -125,21 +131,18 @@ fun NoteListScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(horizontal = 16.dp)
                 .padding(top = paddingValues.calculateTopPadding()),
             contentPadding = PaddingValues(vertical = 12.dp)
         ) {
-
             items(
-                count = noteListState.size,
+                count = notesState.size,
                 key = { it }
             ) { index ->
                 ListNoteItem(
-                    onDelete = {
-                        noteListViewModel.deleteNote(noteListState[index])
-                    },
-                    noteListState[index]
+                    onDelete = { onDeleteNote(notesState[index]) },
+                    noteItem = notesState[index]
                 )
-
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
@@ -216,6 +219,34 @@ fun ListNoteItem(
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun PreviewNoteListScreen() {
+    val sampleNotes = listOf(
+        NoteItem(
+            id = 1,
+            title = "Sample Note 1",
+            description = "This is a description for the first sample note item.",
+            imageUrl = "",
+            dateAdded = 1
+        ),
+        NoteItem(
+            id = 2,
+            title = "Sample Note 2",
+            description = "This is a description for the second sample note item.",
+            imageUrl = "",
+            dateAdded = 2
+        )
+    )
+
+    NoteListContent(
+        notesState = sampleNotes,
+        isOrderedByTitleState = true,
+        onNavigateToAddNote = { /* No-op for preview */ },
+        onChangeOrder = { /* No-op for preview */ },
+        onDeleteNote = { /* No-op for preview */ }
+    )
+}
 
 @Preview(showBackground = true)
 @Composable
