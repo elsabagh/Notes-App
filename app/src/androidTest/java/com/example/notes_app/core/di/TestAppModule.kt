@@ -2,6 +2,7 @@ package com.example.notes_app.core.di
 
 import android.app.Application
 import androidx.room.Room
+import com.example.notes_app.add_notes.domain.use_case.UpsertNote
 import com.example.notes_app.core.data.local.NoteDb
 import com.example.notes_app.core.data.repository.FakeAndroidNoteRepository
 import com.example.notes_app.core.domain.repository.NoteRepository
@@ -46,5 +47,13 @@ object TestAppModule {
         noteRepository: NoteRepository,
     ): DeleteNote {
         return DeleteNote(noteRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUpsertNoteUseCse(
+        noteRepository: NoteRepository,
+    ): UpsertNote {
+        return UpsertNote(noteRepository)
     }
 }
