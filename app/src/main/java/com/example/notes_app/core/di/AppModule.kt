@@ -1,11 +1,15 @@
 package com.example.notes_app.core.di
 
 import android.app.Application
+import android.media.Image
 import androidx.room.Room
+import com.example.notes_app.add_notes.domain.use_case.SearchImages
 import com.example.notes_app.add_notes.domain.use_case.UpsertNote
 import com.example.notes_app.core.data.local.NoteDb
 import com.example.notes_app.core.data.remote.api.ImagesApi
+import com.example.notes_app.core.data.repository.ImagesRepositoryImpl
 import com.example.notes_app.core.data.repository.NoteRepositoryImpl
+import com.example.notes_app.core.domain.repository.ImagesRepository
 import com.example.notes_app.core.domain.repository.NoteRepository
 import com.example.notes_app.note_list.domain.use_case.DeleteNote
 import com.example.notes_app.note_list.domain.use_case.GetAllNotes
@@ -71,5 +75,21 @@ object AppModule {
             .baseUrl(ImagesApi.BASE_URL)
             .build()
             .create(ImagesApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideImagesRepository(
+        imagesApi: ImagesApi,
+    ): ImagesRepository {
+        return ImagesRepositoryImpl(imagesApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSearchImagesUseCse(
+        imagesRepository: ImagesRepository,
+    ): SearchImages {
+        return SearchImages(imagesRepository)
     }
 }
