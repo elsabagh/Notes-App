@@ -121,7 +121,7 @@ fun AddNoteContent(
                     onToggleImagesDialog()
                 }
                 .testTag(
-                    TestTags.NOTE_IMAGE  + addNoteState.imageURL
+                    TestTags.NOTE_IMAGE
                 ),
             model = ImageRequest
                 .Builder(LocalContext.current)
