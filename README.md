@@ -23,4 +23,11 @@ Modern UI implementation using Jetpack Compose, tailored for industry-scale proj
 - **Gradle:** With multi-module and convention plugin configurations.
 
 ## Screenshots
-![notes_images]( )
+<p align="center">
+        <img src="https://github.com/elsabagh/Notes-App/blob/master/ScreenAddNote.png" style="max-height:70vh;object-fit:contain;" width="25%">
+        <img src="https://github.com/elsabagh/Notes-App/blob/master/ScreenNoteList.png" style="max-height:70vh;object-fit:contain;" width="25%">
+   </p>
+<p align="center">
+         <img src="https://github.com/elsabagh/Notes-App/blob/master/ScreenAddNoteDark.png" style="max-height:70vh;object-fit:contain;" width="25%">
+         <img src="https://github.com/elsabagh/Notes-App/blob/master/ScreenNoteListDarkMode.png" style="max-height:70vh;object-fit:contain;" width="25%">
+   </p>
